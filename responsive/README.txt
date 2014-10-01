@@ -10,3 +10,6 @@ No collaboration was made when working on this assignment, and upon testing it,
 it seems to have worked.
 
 Roughly a half-hour was spent on the assignment.
+
+An additional ten or fifteen minutes was spent with Ming, trying to help me
+with my git issues.
