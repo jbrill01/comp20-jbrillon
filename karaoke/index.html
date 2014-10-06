@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Daydream Believer</title>
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+<h1 id="title">Daydream Believer</h1>
+
+<video src="http://www.cs.tufts.edu/comp/20/daydream_believer.webm" id="music_video" controls></video>
+<div id="lyrics"></div>
+
+<script>
+	var video = document.getElementById("music_video");
+	var lyrics = document.getElementById("lyrics");
+	video.addEventListener("progress", function() {
+		if (video.currentTime > 0 && video.currentTime < 37) {
+			lyrics.innerHTML = "<p>Oh, I could hide 'neath the wings</br>Of the bluebird as she sings.</br>The six o'clock alarm would never ring.</br>But it rings and I rise,<br/>Wipe the sleep out of my eyes.<br/>My shavin' razor's cold and it stings.</p>";
+		}
+		if (video.currentTime > 37 && video.currentTime < 54) {
+			lyrics.innerHTML = "<img src='smiley.png' alt='smiley face' /><br/><p>Cheer up, Sleepy Jean.</br>Oh, what can it mean.</br>To a daydream believer.</br>And a homecoming queen.</p>";
+		}
+		if (video.currentTime > 54 && video.currentTime < 84) {
+			lyrics.innerHTML = "<p>You once thought of me</br>As a white knight on a steed.</br>Now you know how happy I can be.</br>Oh, and our good times start and end</br>Without dollar one to spend.</br>But how much, baby, do we really need.</p>";
+		}
+		if (video.currentTime > 84 && video.currentTime < 119) {
+			lyrics.innerHTML = "<img src='smiley.png' alt='smiley face' /><br/><p>Cheer up, Sleepy Jean.</br>Oh, what can it mean.</br>To a daydream believer.</br>And a homecoming queen.</br>Cheer up, Sleepy Jean.</br>Oh, what can it mean.</br>To a daydream believer.</br>And a homecoming queen.</p>";
+		}
+		if (video.currentTime > 119 && video.currentTime < 127) {
+			lyrics.innerHTML = "<p>[Instrumental interlude]</p></br><img src='musicNotes.png' alt='music notes' />";
+		}
+		if (video.currentTime > 127) {
+			lyrics.innerHTML = "<img src='smiley.png' alt='smiley face' /><br/><p>Cheer up, Sleepy Jean.</br>Oh, what can it mean.</br>To a daydream believer.</br>And a homecoming queen.</br>[Repeat and fade]</p>";
+		}
+	});
+
+</script>
+</body>
+</html>
