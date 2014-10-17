@@ -1,0 +1,23 @@
+<html>
+  <head>
+  	<title>Google Maps Project</title>
+	<link rel="stylesheet" href="styles.css" type="text/css" />
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?sensor=false">
+    </script>
+    <script type="text/javascript">
+      function initialize() {
+        var mapSetUp = {
+          center: { lat: 42.406243, lng: -71.122291},
+          zoom: 17
+        };
+        var map = new google.maps.Map(document.getElementById('mapCanvas'),
+            mapSetUp);
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+  </head>
+  <body>
+<div id="mapCanvas"></div>
+  </body>
+</html>
