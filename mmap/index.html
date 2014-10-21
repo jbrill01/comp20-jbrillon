@@ -10,6 +10,7 @@
 	var mylong = 0;
 	var mylocation = new google.maps.LatLng(mylat, mylong);
 	var map;
+	var data;
 	var image = "dean_thomas.png";
 	var request = new XMLHttpRequest();
     var mapSetUp = {
@@ -54,20 +55,18 @@
 			infowindow.setContent(marker.title + "<br />" + "latitude: " + mylat + "<br />" + "longitude: " + mylong);
 			infowindow.open(map, marker);
 		});
+		request.open("POST", "http://chickenofthesea.herokuapp.com/sendLocation", true);
+		request.onreadystatechange=function() {
+			if (request.readyState==4 && request.status==200) {
+				data = request.responseText;
+			}
+			console.log(data);
+		}
+		request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		request.send("login=DeanThomas&lat="+mylat+"&lng="+mylong);
 	}
 	google.maps.event.addDomListener(window, 'load', initialize);
-	request.open("POST", "http://chickenofthesea.herokuapp.com/sendLocation", true);
-	var data;
-	request.onreadystatechange=function() {
-		if (request.readyState==4 && request.status==200) {
-			data = request.responseText;
-		} else {
-			data = "didn't work";
-		}
-		console.log(data);
-	}
-	request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	request.send("login=DeanThomas&lat="+mylat+"&lng="+mylong);
+	//data.parse;
 </script>
 </head>
 <body>
