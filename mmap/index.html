@@ -74,8 +74,8 @@
 
 	function createMarker(place) {
 		var marker = new google.maps.Marker({
-			map: map;
-			position: place.geometry.location;
+			map: map,
+			position: place.geometry.location
 		});
 	}
 	google.maps.event.addDomListener(window, 'load', initialize);
