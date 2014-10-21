@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Assignment Two</title>
+<link rel="stylesheet" href="styles.css" type="text/css" />
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
+	<script>
+	var mylat = 0;
+	var mylong = 0;
+	var mylocation = new google.maps.LatLng(mylat, mylong);
+	var map;
+	var image = "dean_thomas.png";
+	var request = new XMLHttpRequest();
+    var mapSetUp = {
+        center: mylocation,
+    	zoom: 15
+    };
+    var marker;
+    var infowindow = new google.maps.InfoWindow();
+	function initialize() {
+        map = new google.maps.Map(document.getElementById('mapCanvas'),
+            mapSetUp);
+        getLocation();
+    }
+
+	function getLocation() {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(updateStuff);
+		} else {
+			alert("Unfortunately, geolocation does not work on your current web browser");
+		}
+	}
+
+	function updateStuff(position) {
+		mylat = position.coords.latitude;
+		mylong = position.coords.longitude;
+		renderMap();
+	}
+
+	function renderMap() {
+		mylocation = new google.maps.LatLng(mylat, mylong);
+				
+		map.panTo(mylocation);
+	
+		marker = new google.maps.Marker({
+			position: mylocation,
+			title: "Dean Thomas",
+			icon: image
+		});
+		marker.setMap(map);
+					
+		google.maps.event.addListener(marker, 'click', function() {
+			infowindow.setContent(marker.title + "<br />" + "latitude: " + mylat + "<br />" + "longitude: " + mylong);
+			infowindow.open(map, marker);
+		});
+	}
+	google.maps.event.addDomListener(window, 'load', initialize);
+	request.open("POST", "http://chickenofthesea.herokuapp.com/sendLocation", true);
+	var data;
+	request.onReadyStateChange=function() {
+		if (request.readyState==4 && request.status==200) {
+			data = request.responseText;
+		}
+	}
+	request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	request.send("login=DeanThomas&lat=mylat&lng=mylong");
+</script>
+</head>
+<body>
+	<div id="mapCanvas"></div>
+</body>
+</html>
