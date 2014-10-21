@@ -58,7 +58,7 @@
 	google.maps.event.addDomListener(window, 'load', initialize);
 	request.open("POST", "http://chickenofthesea.herokuapp.com/sendLocation", true);
 	var data;
-	request.onReadyStateChange=function() {
+	request.onreadystatechange=function() {
 		if (request.readyState==4 && request.status==200) {
 			data = request.responseText;
 		}
