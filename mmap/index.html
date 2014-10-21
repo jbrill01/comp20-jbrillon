@@ -59,19 +59,16 @@
 		request.onreadystatechange=function() {
 			if (request.readyState==4 && request.status==200) {
 				text = request.responseText;
-			}
-		}
-		request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		request.send("login=DeanThomas&lat="+mylat+"&lng="+mylong);
-		var data = JSON.parse(text);
-		var characters = text[0];
-		var students = text[1];
+			var data = JSON.parse(text);
+		var characters = data[0];
+		var students = data[1];
 		for (var i = 0; i < students.length; i++) {
 			var marker = new google.maps.Marker({
 				map: map,
 				position: students[i].loc,
 				title: students[i].name
 			});
+			console.log(students[i].name);
 		}
 		for (var i = 0; i < characters.length; i++) {
 			var marker = new google.maps.Marker({
@@ -81,6 +78,10 @@
 				//icon: images/characters[i].name.png
 			});
 		}
+			}
+		}
+		request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		request.send("login=DeanThomas&lat="+mylat+"&lng="+mylong);
 	}
 
 	google.maps.event.addDomListener(window, 'load', initialize);
