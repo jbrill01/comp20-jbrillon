@@ -61,6 +61,8 @@
 	request.onreadystatechange=function() {
 		if (request.readyState==4 && request.status==200) {
 			data = request.responseText;
+		} else {
+			data = "didn't work";
 		}
 	}
 	request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
