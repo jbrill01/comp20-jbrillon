@@ -13,7 +13,7 @@
 	var characters;
 	var mylocation = new google.maps.LatLng(mylat, mylong);
 	var map;
-	var image = "dean_thomas.png";
+	var numbers = [];
 	var request = new XMLHttpRequest();
     var mapSetUp = {
         center: mylocation,
@@ -49,12 +49,12 @@
 		marker = new google.maps.Marker({
 			position: mylocation,
 			title: "Dean Thomas",
-			icon: image
+			icon: "dean_thomas.png"
 		});
 		marker.setMap(map);
 					
 		google.maps.event.addListener(marker, 'click', function() {
-			infowindow.setContent(marker.title + "<br />" + "latitude: " + mylat + "<br />" + "longitude: " + mylong);
+			infowindow.setContent(marker.title + "<br />" + "latitude: " + mylat + "<br />" + "longitude: " + mylong + "<br />" + "distances: " + numbers);
 			infowindow.open(map, marker);
 		});
 		request.open("POST", "http://chickenofthesea.herokuapp.com/sendLocation", true);
@@ -97,6 +97,17 @@
 					strokeWeight: 2
 				});
 				polyline.setMap(map);
+				var R = 3959;
+				var lat1 = characters[i].loc.latitude;
+				var dLat = (characters[i].loc.latitude - mylat) * (Math.PI/180);
+				var dLon = (characters[i].loc.longitude - mylong) * (Math.PI/180);
+				var a = Math.sin(dLat/2) * Math.sin(dLat/2) + 
+                    Math.cos(lat1 * (Math.PI/180)) * Math.cos(mylat * (Math.PI/180)) * 
+                    Math.sin(dLon/2) * Math.sin(dLon/2);  
+    			var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+   		 		var d = R * c;
+   		 		numbers[i] = d;
+   		 		numbers = numbers.sort(function(a,b) { return a-b;});
 		}
 			}
 		}
