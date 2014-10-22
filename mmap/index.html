@@ -85,9 +85,18 @@
 			});
 				google.maps.event.addListener(marker, 'click', function() {
 					infowindow.close();
-					infowindow.setContent(this.title + "<br />" + "position: " + this.position);
+					infowindow.setContent(this.title + "<br />" + "latitude: " + this.position);
 					infowindow.open(map, this);
 				});
+				var polylinecoordinates = [mylocation, new google.maps.LatLng(characters[i].loc.latitude, characters[i].loc.longitude)];
+				var polyline = new google.maps.Polyline({
+					path: polylinecoordinates,
+					geodesic: true,
+					strokeColor: '#6699CC',
+					strokeOpacity: 1.0,
+					strokeWeight: 2
+				});
+				polyline.setMap(map);
 		}
 			}
 		}
