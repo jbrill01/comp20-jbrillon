@@ -69,14 +69,25 @@
 					position: new google.maps.LatLng(students[i].lat, students[i].lng),
 					title: students[i].login
 				});
+				google.maps.event.addListener(marker, 'click', function() {
+					infowindow.close();
+					infowindow.setContent(this.title + "<br />" + "position: " + this.position);
+					infowindow.open(map, this);
+				});
 			}
 			for (var i = 0; i < characters.length; i++) {
+				var pic = "images/" + characters[i].name + ".png";
 				var marker = new google.maps.Marker({
 					map: map,
-					position: new google.maps.LatLng(characters[i].lat, characters[i].lng),
-					title: characters[i].login,
-				//icon: images/characters[i].name.png
+					position: new google.maps.LatLng(characters[i].loc.latitude, characters[i].loc.longitude),
+					title: characters[i].name,
+					icon: pic
 			});
+				google.maps.event.addListener(marker, 'click', function() {
+					infowindow.close();
+					infowindow.setContent(this.title + "<br />" + "position: " + this.position);
+					infowindow.open(map, this);
+				});
 		}
 			}
 		}
