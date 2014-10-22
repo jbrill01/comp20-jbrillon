@@ -9,6 +9,8 @@
 	var mylat = 0;
 	var mylong = 0;
 	var data;
+	var students;
+	var characters;
 	var mylocation = new google.maps.LatLng(mylat, mylong);
 	var map;
 	var image = "dean_thomas.png";
@@ -59,21 +61,20 @@
 		request.onreadystatechange=function() {
 			if (request.readyState==4 && request.status==200) {
 			data = JSON.parse(request.responseText);
-			var characters = data.characters;
-			var students = data.students;
+			characters = data.characters;
+			students = data.students;
 			for (var i = 0; i < students.length; i++) {
 				var marker = new google.maps.Marker({
 					map: map,
-					position: students[i].loc,
-					title: students[i].name
+					position: new google.maps.LatLng(students[i].lat, students[i].lng),
+					title: students[i].login
 				});
-				console.log(students[i].name);
 			}
 			for (var i = 0; i < characters.length; i++) {
 				var marker = new google.maps.Marker({
 					map: map,
-					position: characters[i].loc,
-					title: characters[i].name,
+					position: new google.maps.LatLng(characters[i].lat, characters[i].lng),
+					title: characters[i].login,
 				//icon: images/characters[i].name.png
 			});
 		}
