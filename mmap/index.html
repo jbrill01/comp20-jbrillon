@@ -49,7 +49,7 @@
 		marker = new google.maps.Marker({
 			position: mylocation,
 			title: "Dean Thomas",
-			icon: "dean_thomas.png"
+			icon: "dean_thomas.png",
 		});
 		marker.setMap(map);
 					
@@ -67,11 +67,12 @@
 				var marker = new google.maps.Marker({
 					map: map,
 					position: new google.maps.LatLng(students[i].lat, students[i].lng),
-					title: students[i].login
+					title: students[i].login,
+					cursor: students[i].created_at
 				});
 				google.maps.event.addListener(marker, 'click', function() {
 					infowindow.close();
-					infowindow.setContent(this.title + "<br />" + "position: " + this.position);
+					infowindow.setContent("login: " + this.title + "<br /> latitude: " + this.position.lat() + "<br /> longitude: " + this.position.lng() + "<br /> timestamp: " + this.cursor);
 					infowindow.open(map, this);
 				});
 			}
@@ -81,11 +82,12 @@
 					map: map,
 					position: new google.maps.LatLng(characters[i].loc.latitude, characters[i].loc.longitude),
 					title: characters[i].name,
-					icon: pic
+					icon: pic,
+					cursor: characters[i].loc.note
 			});
 				google.maps.event.addListener(marker, 'click', function() {
 					infowindow.close();
-					infowindow.setContent(this.title + "<br />" + "latitude: " + this.position);
+					infowindow.setContent(this.title + "<br /> latitude: " + this.position.lat() + "<br /> longitude: " + this.position.lng() + "<br /> note: " + this.cursor);
 					infowindow.open(map, this);
 				});
 				var polylinecoordinates = [mylocation, new google.maps.LatLng(characters[i].loc.latitude, characters[i].loc.longitude)];
@@ -106,7 +108,7 @@
                     Math.sin(dLon/2) * Math.sin(dLon/2);  
     			var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
    		 		var d = R * c;
-   		 		numbers[i] = d;
+   		 		numbers[i] = " " + d;
    		 		numbers = numbers.sort(function(a,b) { return a-b;});
 		}
 			}
