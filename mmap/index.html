@@ -56,16 +56,16 @@
 		marker.setMap(map);
 					
 		google.maps.event.addListener(marker, 'click', function() {
-			infowindow.setContent(marker.title + "<br />" + "latitude: " + mylat + "<br />" + "longitude: " + mylong + "<br />" + "distances: " + distances);
+			infowindow.setContent(marker.title + "<br />" + "latitude: " + mylat + "<br />" + "longitude: " + mylong + "<br />" + "distances: " + distances); //put distances in the infowindow
 			infowindow.open(map, marker);
 		});
 		request.open("POST", "http://chickenofthesea.herokuapp.com/sendLocation", true);
-		request.onreadystatechange=function() {
+		request.onreadystatechange=function() { //because asynchronous, most things were put in here
 			if (request.readyState==4 && request.status==200) {
 			data = JSON.parse(request.responseText);
 			characters = data.characters;
 			students = data.students;
-			for (var i = 0; i < students.length; i++) {
+			for (var i = 0; i < students.length; i++) { // loop through students
 				var marker = new google.maps.Marker({
 					map: map,
 					position: new google.maps.LatLng(students[i].lat, students[i].lng),
@@ -78,8 +78,8 @@
 					infowindow.open(map, this);
 				});
 			}
-			for (var i = 0; i < characters.length; i++) {
-				var pic = "images/" + characters[i].name + ".png";
+			for (var i = 0; i < characters.length; i++) { // loop through characters
+				var pic = "images/" + characters[i].name + ".png"; // match picture to character
 				var marker = new google.maps.Marker({
 					map: map,
 					position: new google.maps.LatLng(characters[i].loc.latitude, characters[i].loc.longitude),
@@ -92,16 +92,16 @@
 					infowindow.setContent("name: " + this.title + "<br /> latitude: " + this.position.lat() + "<br /> longitude: " + this.position.lng() + "<br /> note: " + this.cursor);
 					infowindow.open(map, this);
 				});
-				var polylinecoordinates = [mylocation, new google.maps.LatLng(characters[i].loc.latitude, characters[i].loc.longitude)];
+				var polylinecoordinates = [mylocation, new google.maps.LatLng(characters[i].loc.latitude, characters[i].loc.longitude)]; //polylines
 				var polyline = new google.maps.Polyline({
 					path: polylinecoordinates,
 					geodesic: true,
-					strokeColor: '#6699CC',
+					strokeColor: '#6699CC', //tufts blue!
 					strokeOpacity: 1.0,
 					strokeWeight: 2
 				});
 				polyline.setMap(map);
-				var R = 3959;
+				var R = 3959; // calculating distance
 				var lat1 = characters[i].loc.latitude;
 				var dLat = (characters[i].loc.latitude - mylat) * (Math.PI/180);
 				var dLon = (characters[i].loc.longitude - mylong) * (Math.PI/180);
@@ -112,9 +112,9 @@
    		 		var d = R * c;
    		 		numbers[i] = d;
    		 		pairings[d.toString()] = characters[i].name;
-   		 		numbers = numbers.sort(function(a,b) { return a-b;});
+   		 		numbers = numbers.sort(function(a,b) { return a-b;}); //numbered sorting
 		}
-				for (var k = 0; k < numbers.length; k++) {
+				for (var k = 0; k < numbers.length; k++) { // logging the distances
 					distances[k] = " " + pairings[numbers[k].toString()] + ": " + numbers[k] + " miles";
 				}
 			}
