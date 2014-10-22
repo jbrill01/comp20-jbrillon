@@ -14,6 +14,8 @@
 	var mylocation = new google.maps.LatLng(mylat, mylong);
 	var map;
 	var numbers = [];
+	var pairings = {};
+	var distances = [];
 	var request = new XMLHttpRequest();
     var mapSetUp = {
         center: mylocation,
@@ -54,7 +56,7 @@
 		marker.setMap(map);
 					
 		google.maps.event.addListener(marker, 'click', function() {
-			infowindow.setContent(marker.title + "<br />" + "latitude: " + mylat + "<br />" + "longitude: " + mylong + "<br />" + "distances: " + numbers);
+			infowindow.setContent(marker.title + "<br />" + "latitude: " + mylat + "<br />" + "longitude: " + mylong + "<br />" + "distances: " + distances);
 			infowindow.open(map, marker);
 		});
 		request.open("POST", "http://chickenofthesea.herokuapp.com/sendLocation", true);
@@ -108,9 +110,13 @@
                     Math.sin(dLon/2) * Math.sin(dLon/2);  
     			var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
    		 		var d = R * c;
-   		 		numbers[i] = " " + d;
+   		 		numbers[i] = d;
+   		 		pairings[d.toString()] = characters[i].name;
    		 		numbers = numbers.sort(function(a,b) { return a-b;});
 		}
+				for (var k = 0; k < numbers.length; k++) {
+					distances[k] = " there are " + numbers[k] + " miles to get to " + pairings[numbers[k].toString()];
+				}
 			}
 		}
 		request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
