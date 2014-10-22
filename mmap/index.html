@@ -115,7 +115,7 @@
    		 		numbers = numbers.sort(function(a,b) { return a-b;});
 		}
 				for (var k = 0; k < numbers.length; k++) {
-					distances[k] = " there are " + numbers[k] + " miles to get to " + pairings[numbers[k].toString()];
+					distances[k] = " " + pairings[numbers[k].toString()] + ": " + numbers[k] + " miles";
 				}
 			}
 		}
