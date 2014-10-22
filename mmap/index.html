@@ -10,7 +10,6 @@
 	var mylong = 0;
 	var mylocation = new google.maps.LatLng(mylat, mylong);
 	var map;
-	var text;
 	var image = "dean_thomas.png";
 	var request = new XMLHttpRequest();
     var mapSetUp = {
@@ -58,23 +57,22 @@
 		request.open("POST", "http://chickenofthesea.herokuapp.com/sendLocation", true);
 		request.onreadystatechange=function() {
 			if (request.readyState==4 && request.status==200) {
-				text = request.responseText;
-			var data = JSON.parse(text);
-		var characters = data[0];
-		var students = data[1];
-		for (var i = 0; i < students.length; i++) {
-			var marker = new google.maps.Marker({
-				map: map,
-				position: students[i].loc,
-				title: students[i].name
-			});
-			console.log(students[i].name);
-		}
-		for (var i = 0; i < characters.length; i++) {
-			var marker = new google.maps.Marker({
-				map: map,
-				position: characters[i].loc,
-				title: characters[i].name,
+				var data = JSON.parse(request.responseText);
+			var characters = data[0];
+			var students = data[1];
+			for (var i = 0; i < students.length; i++) {
+				var marker = new google.maps.Marker({
+					map: map,
+					position: students[i].loc,
+					title: students[i].name
+				});
+				console.log(students[i].name);
+			}
+			for (var i = 0; i < characters.length; i++) {
+				var marker = new google.maps.Marker({
+					map: map,
+					position: characters[i].loc,
+					title: characters[i].name,
 				//icon: images/characters[i].name.png
 			});
 		}
