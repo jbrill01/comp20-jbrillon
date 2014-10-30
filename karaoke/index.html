@@ -16,6 +16,7 @@
 <script>
 	var video = document.getElementById("music_video");
 	var lyrics = document.getElementById("lyrics");
+	
 	video.addEventListener("timeupdate", function() {
 		if (video.currentTime > 0 && video.currentTime < 37) {
 			lyrics.innerHTML = "<p>Oh, I could hide 'neath the wings</br>Of the bluebird as she sings.</br>The six o'clock alarm would never ring.</br>But it rings and I rise,<br/>Wipe the sleep out of my eyes.<br/>My shavin' razor's cold and it stings.</p>";
