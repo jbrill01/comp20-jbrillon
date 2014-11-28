@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Security Report</title>
+<link rel="stylesheet" href="styles.css" type="text/css" />
+</head>
+
+<body>
+<h1>Security Assessment of Jay's Past Projects</h1>
+<p>Prepared by <a href="jbrill01.github.io">Jason Brillon</a> • 11/28/2014</p>
+</br>
+<h2>Introduction</h2>
+<p>This assessment tests the vulnerability and security of a <a href="http://shrouded-ocean-3871.herokuapp.com">Location Database Heroku App</a> made by Jay Destories.</p>
+</br>
+<h2>Methodology</h2>
+<p>I first carried out "black-box" attacks with curl. I performed cross-site scripting and inputted incorrect data, but I could think of little else to do without looking at the source code (I also lost time testing for things that weren't problems - i.e. malformed JSON). After looking at the source code, I had more success and was able to…</p>
+</br>
+<h2>Abstract of Findings</h2>
+<h2>Issues Found</h2>
+<h4>1. Cross-Site Scripting</h4><ul>
+<li>Issue: Cross-Site Scripting</li>
+<ul><li>Cross-Site Scripting (XSS) is when the server takes in javascript as data and subsequently executes it.</li></ul>
+<li>Location: POST /sendLocation</li>
+<ul><li>Specifically, the three parameters taken in on POST (login, lat and lng) are neither regulated nor escaped. Therefore, anything – such as code contained in script tags – can be read in.</li></ul>
+<li>Severity of Issue: <span class="severe">High</span>
+<ul><li>XSS is often ranked among the top security threats to websites, and that's because the Javascript taken in can do virtually anything, from alert messages (which I chose to do), to redirecting the window to corrupt websites.</ul></li>
+<li>Proof of Vulnerability</li>
+<ul><li>This is the alert message I put up on Jay's page</li><div class="alert"></div></ul>
+<li>Resolution</li>
+<ul><li>sdf</li></ul></ul>
+</br>
+<h4>4. Non-numerical Inputs</h4><ul>
+<li>Issue: Non-numerical Inputs</li>
+<ul><li>Latitude and longitude should be numerical inputs (i.e. 43.21 or -123.45). However, Jay's application can take any input (as seen with issue number one), not just numerical ones.</li></ul>
+<li>Location: POST /sendLocation</li>
+<ul><li>When taking in the three parameters on POST (login, lat and lng), lat and lng have no regulations about what they have to be. Therefore, they are not limited to numerical characters.</li></ul>
+<li>Severity of Issue: <span class="weak">Low</span>
+<ul><li>Beyond potentially crowding the database with input much longer than a standard lat and lng, the biggest problem this causes is a list of locations that are not actually locations. For instance, some of the locations on Jay's app are now just random characters, or they are blank. Even Ming stored a lat of "this" and a lng of "isbad".</ul></li>
+<li>Proof of Vulnerability</li></ul>
+<ul>Here are two example non-numerical inputs from Jay's page<div class="non-num"></div></ul>
+<li>Resolution</li>
+<ul><li>sdf</li></ul>
+<h2>Conclusion</h2>

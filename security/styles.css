@@ -1,0 +1,18 @@
+.severe {
+	color: red;
+}
+
+.alert {
+	height: 400px;
+	width: 1080px;
+	background-image: url("alert.png");
+}
+
+.weak {
+	color: green;
+}
+.non-num {
+	height: 160px;
+	width: 1020px;
+	background-image: url("nonnum.png");
+}
