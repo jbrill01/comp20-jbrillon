@@ -7,49 +7,68 @@
 </head>
 
 <body>
-<h1>Security Assessment of Jay's Past Projects</h1>
-<p>Prepared by <a href="jbrill01.github.io">Jason Brillon</a> • 11/28/2014</p>
+<h1>Security Assessment of shrouded-ocean-3871.herokuapp.com</h1>
+<p>By <a href="jbrill01.github.io">Jason Brillon</a> • 11/28/2014</p>
 </br>
 <h2>Introduction</h2>
-<p>This assessment tests the vulnerability and security of a <a href="http://shrouded-ocean-3871.herokuapp.com">Location Database Heroku App</a> made by Jay Destories.</p>
+<p>This assessment tests the vulnerability and security of a <a href="http://shrouded-ocean-3871.herokuapp.com">Location Database Heroku App</a> made by Jay Destories. Below is both a general outline of the findings as well as a more specific analysis of four vulnerabilities and the solutions to said vulnerabilities. An estimated fee for the cost of making Jay's application more secure and safer for public use can also be found below.</p>
+<p> Jay's application is a location reporting and storing database, with four major components: a POST /sendLocation API that takes in a check-in from any domain, a GET /locations.json that returns a JSON string of check-ins for a specified login, a GET /redline.json that returns a live JSON copy of the MBTA redline, and a homepage that displays a sorted log of all logins.</p>
 </br>
 <h2>Methodology</h2>
-<p>I first carried out "black-box" attacks with curl. I performed cross-site scripting, request injection attacks, and inputted falsified coordinates, but I could think of little else to do without looking at the source code (I also lost time testing for things that weren't problems - i.e. malformed JSON). After looking at the source code, I had more success and was able to…</p>
+<p>I first carried out "black-box" attacks with curl in terminal. I performed cross-site scripting, request injection attacks, inputted falsified coordinates, and FOURTH THING. However, I also spent a great deal of time on failed attacks – rendering malformed JSON and injecting additional database fields (tests 3-8). After looking at the source code, I was able to both understand why some of my attacks failed and also examine the specific variables that needed to be altered in order to prevent my successful attacks.</p>
+<p>No security tools (i.e. Burp Suite) were used for these attacks.</p>
 </br>
 <h2>Abstract of Findings</h2>
+<p> Many of the issues found relate to one of the big ideas of web programming – you can't trust data inputted by the user. The source code for this application does not look out for information and input that could be potentially dangerous. Failing to do so creates high security threats; it allows people to make fake coordinates, get access to other people's information, or even change the layout and functionality of the application. It should be noted that while the source code does not account for these and other security threats, it does take some steps towards preventing security issues (i.e. it makes sure to store nothing more login, latitude and longitude).</p>
+</br>
 <h2>Issues Found</h2>
 <h4>1. Cross-Site Scripting</h4><ul>
 <li>Issue: Cross-Site Scripting</li>
 <ul><li>Cross-Site Scripting (XSS) is when the server takes in javascript as data and subsequently executes it.</li></ul>
 <li>Location: POST /sendLocation</li>
-<ul><li>Specifically, the three parameters taken in on POST (login, lat and lng) are neither regulated nor escaped. Therefore, anything – such as code contained in script tags – can be read in.</li></ul>
+<ul><li>Specifically, the three parameters taken in on POST (login, lat and lng) are not regulated. Therefore, anything – such as code contained in script tags – can be read in.</li></ul>
 <li>Severity of Issue: <span class="severe">High</span>
-<ul><li>XSS is often ranked among the top security threats to websites, and that's because the Javascript taken in can do virtually anything, from alert messages (which I chose to do), to redirecting the window to corrupt websites.</ul></li>
+<ul><li>XSS is often ranked among the top security threats to websites, and that's because the javascript taken in can do virtually anything, from alert messages (which I chose to do), to redirecting the window to corrupt websites.</ul></li>
 <li>Proof of Vulnerability</li>
 <ul><li>This is the alert message I put up on Jay's page</li><div class="alert"></div></ul>
 <li>Resolution</li>
-<ul><li>Possible resolutions including limiting the input to alphanumerical only, or more preferably changing questionable characters into HTML versions (i.e. angle-brackets can become &amp;lt; and &amp;gt;).</li></ul></ul>
+<ul><li>Possible resolutions include limiting the input to alphanumerical only, or more preferably changing questionable characters when they are taken in. For instance, lat.replace("<", "&amp;lt;").</li></ul></ul>
 </br>
 <h4>2. Request Injection</h4><ul>
 <li>Issue: Request Injection Attack</li>
-<ul><li>A request injection attack is when the a request.</li></ul>
+<ul><li>A request injection attack is a means of injecting malicious input in order to attack a database upon usage of that input.</li></ul>
 <li>Location: GET /locations.json</li>
-<ul><li>Specifically, the query that is taken in on GET is capable of taking in [$gt] and [$ne]. The first will return all data after a given input, and the second will return all data that is not a given input.</li></ul>
+<ul><li>Specifically, the request.query.login that is taken in on GET is capable of containing [$gt] and [$ne]. The first will return all data after a given input, and the second will return all data that is not equal to a given input.</li></ul>
 <li>Severity of Issue: <span class="severe">High</span>
-<ul><li>In this particular scenario, all database information is revealed just by pairing [$gt] with a blank input, or by pairing [$ne] with an input not in the database. Therefore, so long as you know the name of the requested query parameter and regardless of whether you know anything about the database itself, you can get the returned information for all members of the database.</ul></li>
+<ul><li>In this particular scenario, all database information is revealed just by pairing [$gt] with a blank login, or by pairing [$ne] with a login not in the database. Therefore, so long as you know the name of the requested query parameter (in this case, login) and regardless of whether you know anything about the contents of the database, you can get the returned information for all members of the database.</ul></li>
 <li>Proof of Vulnerability</li>
-<ul><li>Below are two examples of this error: a [$gt] that returns all data, and an [$ne] that returns all data except for input "test4".</li><div class="reqInject"></div><div class="reqInject req2"></div></ul>
+<ul><li>Below are two examples of this error: a [$gt] that returns all data, and an [$ne] that returns all data except for login "test4".</li><div class="reqInject"></div><div class="reqInject req2"></div></ul>
 <li>Resolution</li>
-<ul><li>?</li></ul></ul>
-</br><h4>4. Non-numerical Inputs</h4><ul>
-<li>Issue: Non-numerical Inputs</li>
-<ul><li>Latitude and longitude should be numerical inputs (i.e. 43.21 or -123.45). However, Jay's application can take any input (as seen with issue number one), not just numerical ones.</li></ul>
+<ul><li>Possible solutions to this are very similar to those for XSS. For instance, login.replace("$", "/$").</li></ul></ul>
+</br>
+<h4>3. Curl Loop</h4><ul>
+<li>Issue: Looping the Input of Data</li>
+<ul><li>With a simple for loop, you can execute a given command countless times. In this case, curl can send thousands upon thousands of entries into a database, because there is no rate limiting.</li></ul>
+<li>Location: POST /sendLocation</li>
+<ul><li>/sendLocation takes in a request from any domain, and it can take in said request as many times as a domain wants to send it.</li></ul>
+<li>Severity of Issue: <span class="medium">Medium</span>
+<ul><li>For my test, I ran a for loop from 0 to 10. However, I could have easily ran one from 0 to 100, or 1000, and so on and so forth. Therefore, with just a simple loop, countless inputs could flood the server. This would make the application useless (from listing all of those check-ins to returning them in JSON), and it could – although unlikely because MongoDB can handle a lot of input – crash the application's database.</ul></li>
+<li>Proof of Vulnerability</li>
+<ul><li>Below is my inputted loop and the outputted result.</li><div class="loop"></div><div class="loop2"></div></ul>
+<li>Resolution</li>
+<ul><li>NPM actually comes with a package to combat this issue: express-limiter. Requiring it – var limiter = require('express-limiter') – and then setting up the given options (i.e. the total number of requests allowed per hour by IP address, the expiration date of a timeout) can help prevent the loop from running/completing.</li></ul></ul>
+</br>
+<h4>4. Falsifying Inputs</h4><ul>
+<li>Issue: Falsified Inputs</li>
+<ul><li>Latitude and longitude should ideally be the numerical inputs of your actual location (i.e. 42.41 or -71.12). However, Jay's application can take any input (as seen with issue number one), not just numerical ones. There is no server-side effort to confirm the inputted lat and lng.</li></ul>
 <li>Location: POST /sendLocation</li>
 <ul><li>When taking in the three parameters on POST (login, lat and lng), lat and lng have no regulations about what they have to be. Therefore, they are not limited to numerical characters.</li></ul>
 <li>Severity of Issue: <span class="weak">Low</span>
-<ul><li>Beyond potentially crowding the database with input much longer than a standard lat and lng, the biggest problem this causes is a list of locations that are not actually locations. For instance, some of the locations on Jay's app are now just random characters, or they are blank. Ming noted this when storing a lat of "this" and a lng of "isbad".</ul></li>
+<ul><li>Beyond potentially crowding the database with input much longer than the length of a standard latitude or longitude, the biggest problem this causes is a list of locations that are not actually locations. For instance, some of the locations on Jay's app are now just random characters, or they are blank. Ming noted this when storing a lat of "this" and a lng of "isbad".</ul></li>
 <li>Proof of Vulnerability</li>
 <ul><li>Here are two example non-numerical inputs from Jay's page</li><div class="non-num"></div></ul></ul>
 <li>Resolution</li>
-<ul><li>One possible resolution would be to create an additional if statement, and say that if (isNaN(the inputted lat) || isNaN(the inputted lng)), send an error and do not store the input in the database </li></ul>
+<ul><li>One possible solution is to create an if statement that would return an error message if either isNAN(lat) or isNAN(lng) is true after parseFloat(lat) and parseFloat(lng). Additionally, the inputted coordinates can be cross-referenced with that of the IP address of the computer, with a buffer zone of +-0.5. This way, if lat and lng are numbers but falsified numbers, they too can be accounted for.</li></ul>
+</br>
 <h2>Conclusion</h2>
+<p>It is important to note that these four issues are not all of the possible issues with this application. Additionally, the proposed resolutions are not panaceas and are not perfect. For instance, someone can falsify his/her IP address, thereby making the proposed resolution to vulnerability #4 less effective. However, these four vulnerabilies are some of the most obvious threats to the efficacy and safety of this web application. Failure to minimalize these risks makes this application an easy target. Correcting the risks, for the mere cost of $400, is integral in order to have a more secure and sound application.</p>

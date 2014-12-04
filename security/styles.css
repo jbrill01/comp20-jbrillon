@@ -1,16 +1,36 @@
 body {
 	padding-left: 20px;
 	padding-right: 20px;
+	font-family: Calibri, Helvetica;
 }
 
-.severe {
-	color: red;
+a {
+	color: #6699cc;
+}
+
+a:visited {
+	color: #cc0000;
+}
+
+h2 {
+	border-bottom: 1px solid #cccccc;
 }
 
 .alert {
 	height: 350px;
 	width: 1080px;
 	background-image: url("alert.png");
+}
+
+.medium {
+	color: orange;
+	font-weight: bold;
+}
+
+.non-num {
+	height: 160px;
+	width: 1020px;
+	background-image: url("nonnum.png");
 }
 
 .reqInject {
@@ -23,12 +43,24 @@ body {
 	background-image: url("reqInject.png");
 }
 
-.weak {
-	color: green;
+.severe {
+	color: red;
+	font-weight: bold;
 }
 
-.non-num {
-	height: 160px;
-	width: 1020px;
-	background-image: url("nonnum.png");
+.weak {
+	color: green;
+	font-weight: bold;
+}
+
+.loop {
+	height: 100px;
+	width: 800px;
+	background-image: url("loop.png");
+}
+
+.loop2 {
+	height: 440px;
+	width: 1050px;
+	background-image: url("loop1.png");
 }
