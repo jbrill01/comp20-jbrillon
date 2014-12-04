@@ -1,18 +1,66 @@
-.severe {
-	color: red;
+body {
+	padding-left: 20px;
+	padding-right: 20px;
+	font-family: Calibri, Helvetica;
+}
+
+a {
+	color: #6699cc;
+}
+
+a:visited {
+	color: #cc0000;
+}
+
+h2 {
+	border-bottom: 1px solid #cccccc;
 }
 
 .alert {
-	height: 400px;
+	height: 350px;
 	width: 1080px;
 	background-image: url("alert.png");
 }
 
-.weak {
-	color: green;
+.medium {
+	color: orange;
+	font-weight: bold;
 }
+
 .non-num {
 	height: 160px;
 	width: 1020px;
 	background-image: url("nonnum.png");
+}
+
+.reqInject {
+	height: 220px;
+	width: 1080px;
+	background-image: url("reqInject2.png");
+}
+
+.req2 {
+	background-image: url("reqInject.png");
+}
+
+.severe {
+	color: red;
+	font-weight: bold;
+}
+
+.weak {
+	color: green;
+	font-weight: bold;
+}
+
+.loop {
+	height: 100px;
+	width: 800px;
+	background-image: url("loop.png");
+}
+
+.loop2 {
+	height: 440px;
+	width: 1050px;
+	background-image: url("loop1.png");
 }
